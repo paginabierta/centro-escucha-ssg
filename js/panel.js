@@ -2,6 +2,7 @@ import { FIREBASE_LISTO, auth, db, obtenerRutas, obtenerAgentes } from './fireba
 import RUTAS_SEED from './rutas-data.js';
 import REFLEXIONES_SEED from './reflexiones-data.js';
 import { PALETAS, FUENTES, obtenerTema, aplicarTema } from './tema.js';
+import { CAMPOS, obtenerContenido } from './contenido.js';
 
 if (!FIREBASE_LISTO) {
   document.querySelector('.panel-wrap').innerHTML =
@@ -35,6 +36,7 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('tab-agentes').style.display = 'block';
     document.getElementById('tab-equipoapoyo').style.display = 'block';
     document.getElementById('tab-tema').style.display = 'block';
+    document.getElementById('tab-textos').style.display = 'block';
     document.getElementById('tab-motivacion').style.display = 'block';
     document.getElementById('tab-accesos').style.display = 'block';
   }
@@ -55,6 +57,7 @@ document.querySelectorAll('.tab').forEach(tab => {
     if (tab.dataset.tab === 'agentes') cargarListaAgentes();
     if (tab.dataset.tab === 'equipoapoyo') cargarListaEquipoApoyo();
     if (tab.dataset.tab === 'tema') cargarOpcionesTema();
+    if (tab.dataset.tab === 'textos') cargarFormularioTextos();
     if (tab.dataset.tab === 'motivacion') cargarListaReflexiones();
   });
 });
@@ -350,6 +353,37 @@ document.getElementById('form-tema')?.addEventListener('submit', async (e) => {
   try {
     await setDoc(doc(db, 'configuracion', 'tema'), temaSeleccionado, { merge: true });
     msg.textContent = 'Configuración guardada — el sitio público ya se actualizó.';
+    msg.className = 'form-msg ok';
+  } catch (err) {
+    msg.textContent = 'Error: ' + err.message;
+    msg.className = 'form-msg error';
+  }
+});
+
+// ---------- Textos de páginas (admin) ----------
+async function cargarFormularioTextos() {
+  const pagina = document.getElementById('textos-pagina').value;
+  const campos = CAMPOS[pagina] || [];
+  const datos = await obtenerContenido(pagina);
+  const cont = document.getElementById('campos-textos');
+  cont.innerHTML = campos.map(c => `
+    <div class="campo">
+      <label>${c.label}</label>
+      <textarea data-campo="${c.id}" rows="3">${datos[c.id] || ''}</textarea>
+    </div>`).join('');
+}
+
+document.getElementById('textos-pagina')?.addEventListener('change', cargarFormularioTextos);
+
+document.getElementById('form-textos')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('msg-textos');
+  const pagina = document.getElementById('textos-pagina').value;
+  const datos = {};
+  document.querySelectorAll('#campos-textos textarea').forEach(t => datos[t.dataset.campo] = t.value);
+  try {
+    await setDoc(doc(db, 'contenido', pagina), datos, { merge: true });
+    msg.textContent = 'Textos guardados — la página pública ya se actualizó.';
     msg.className = 'form-msg ok';
   } catch (err) {
     msg.textContent = 'Error: ' + err.message;
