@@ -31,8 +31,8 @@
 
 <section class="hero">
   <div class="wrap">
-    <h1>Aquí te escuchamos.</h1>
-    <p class="sub">Encuentra a quién acudir en tu municipio: parroquia, párroco y hospital más cercano.</p>
+    <h1 data-cid="hero_titulo">Aquí te escuchamos.</h1>
+    <p class="sub" data-cid="hero_subtitulo">Encuentra a quién acudir en tu municipio: parroquia, párroco y hospital más cercano.</p>
 
     <div class="buscador">
       <label for="selector-municipio">¿En qué municipio de la diócesis estás?</label>
@@ -51,8 +51,8 @@
 <section class="bloque">
   <div class="wrap">
     <div class="bloque-cabeza">
-      <h2>Un espacio para quien atraviesa un momento difícil</h2>
-      <p>El Centro de Escucha Psicoespiritual acompaña a la comunidad diocesana desde la escucha, la espiritualidad y la psicología — sin juzgar, sin prisa, y sin sustituir la ayuda profesional cuando hace falta.</p>
+      <h2 data-cid="seccion_titulo">Un espacio para quien atraviesa un momento difícil</h2>
+      <p data-cid="seccion_texto">El Centro de Escucha Psicoespiritual acompaña a la comunidad diocesana desde la escucha, la espiritualidad y la psicología — sin juzgar, sin prisa, y sin sustituir la ayuda profesional cuando hace falta.</p>
     </div>
     <a href="que-es-el-centro.html" class="btn btn-secundario">Conoce más sobre el Centro</a>
   </div>
@@ -109,6 +109,10 @@
   </div>
 </footer>
 
+<script type="module">
+  import { obtenerContenido, aplicarContenido } from './js/contenido.js';
+  obtenerContenido('inicio').then(aplicarContenido);
+</script>
 <script type="module" src="js/main.js"></script>
 </body>
 </html>

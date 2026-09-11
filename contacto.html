@@ -39,7 +39,7 @@
 
   <p>Si tu situación es urgente, no esperes a escribirnos: consulta las <a href="index.html#buscador">líneas de emergencia</a> en la página de inicio, o acércate a la parroquia de tu municipio.</p>
 
-  <p>Para cualquier otra consulta sobre el Centro de Escucha, puedes comunicarte con SEPAS a través de los canales oficiales de la Diócesis de Socorro y San Gil.</p>
+  <p data-cid="texto2">Para cualquier otra consulta sobre el Centro de Escucha, puedes comunicarte con SEPAS a través de los canales oficiales de la Diócesis de Socorro y San Gil.</p>
 </article>
 
 <footer class="site-footer">
@@ -65,5 +65,10 @@
     <div class="copy">© Diócesis de Socorro y San Gil — SEPAS</div>
   </div>
 </footer>
+
+<script type="module">
+  import { obtenerContenido, aplicarContenido } from './js/contenido.js';
+  obtenerContenido('contacto').then(aplicarContenido);
+</script>
 </body>
 </html>

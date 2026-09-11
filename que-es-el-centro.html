@@ -33,7 +33,7 @@
 </div>
 
 <article class="contenido-articulo wrap">
-  <p>El Centro de Escucha Psicoespiritual es un espacio de acogida, escucha activa, primeros auxilios psicológicos, orientación y acompañamiento espiritual, de carácter gratuito, confidencial y no clínico, dirigido a toda persona de la Diócesis de Socorro y San Gil.</p>
+  <p data-cid="intro1">El Centro de Escucha Psicoespiritual es un espacio de acogida, escucha activa, primeros auxilios psicológicos, orientación y acompañamiento espiritual, de carácter gratuito, confidencial y no clínico, dirigido a toda persona de la Diócesis de Socorro y San Gil.</p>
 
   <h2>Qué encuentras aquí</h2>
   <ul>
@@ -52,10 +52,10 @@
   </ul>
 
   <h2>Desde dónde acompañamos</h2>
-  <p>Este espacio se sostiene en dos tradiciones que se complementan: la escucha y la cercanía que pide el Evangelio — como el Buen Samaritano, que se acerca, venda las heridas y acompaña — y el rigor de la psicología, desde los enfoques cognitivo-conductual y humanista.</p>
+  <p data-cid="desde_donde">Este espacio se sostiene en dos tradiciones que se complementan: la escucha y la cercanía que pide el Evangelio — como el Buen Samaritano, que se acerca, venda las heridas y acompaña — y el rigor de la psicología, desde los enfoques cognitivo-conductual y humanista.</p>
 
   <h2>Confidencialidad</h2>
-  <p>Todo lo que compartas aquí es confidencial, con dos únicas excepciones: riesgo inminente para tu vida o la de alguien más, y sospecha de abuso a un menor o un adulto vulnerable. En esos casos, activamos la ruta de ayuda correspondiente para proteger la vida por encima de la reserva de la conversación.</p>
+  <p data-cid="confidencialidad">Todo lo que compartas aquí es confidencial, con dos únicas excepciones: riesgo inminente para tu vida o la de alguien más, y sospecha de abuso a un menor o un adulto vulnerable. En esos casos, activamos la ruta de ayuda correspondiente para proteger la vida por encima de la reserva de la conversación.</p>
 </article>
 
 <footer class="site-footer">
@@ -81,5 +81,10 @@
     <div class="copy">© Diócesis de Socorro y San Gil — SEPAS</div>
   </div>
 </footer>
+
+<script type="module">
+  import { obtenerContenido, aplicarContenido } from './js/contenido.js';
+  obtenerContenido('que_es').then(aplicarContenido);
+</script>
 </body>
 </html>

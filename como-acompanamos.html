@@ -34,19 +34,19 @@
 
 <article class="contenido-articulo wrap">
   <h2>🕊️ Soledad</h2>
-  <p>Particularmente presente en un territorio rural y disperso, donde muchos adultos mayores viven solos, con hijos que migraron. Aquí el acompañamiento es de presencia y escucha regular — la soledad no se resuelve con una sola visita, se alivia con un vínculo que se sostiene en el tiempo.</p>
+  <p data-cid="soledad">Particularmente presente en un territorio rural y disperso, donde muchos adultos mayores viven solos, con hijos que migraron. Aquí el acompañamiento es de presencia y escucha regular — la soledad no se resuelve con una sola visita, se alivia con un vínculo que se sostiene en el tiempo.</p>
 
   <h2>🕯️ Duelo</h2>
-  <p>Duelo por la muerte de un ser querido, pero también otros duelos que a veces no se nombran: la migración de un hijo, una ruptura familiar, un proyecto de vida que no se pudo cumplir. Acompañamos sin prisa por "consolar" con frases hechas, respetando tu propio proceso.</p>
+  <p data-cid="duelo">Duelo por la muerte de un ser querido, pero también otros duelos que a veces no se nombran: la migración de un hijo, una ruptura familiar, un proyecto de vida que no se pudo cumplir. Acompañamos sin prisa por "consolar" con frases hechas, respetando tu propio proceso.</p>
 
   <h2>🤲 Enfermedad</h2>
-  <p>Cercanía espiritual y emocional en la enfermedad, incluidos los pacientes en etapa terminal o con cáncer. No sustituimos el manejo médico: acompañamos junto a él, en coordinación con el equipo de salud tratante cuando existe.</p>
+  <p data-cid="enfermedad">Cercanía espiritual y emocional en la enfermedad, incluidos los pacientes en etapa terminal o con cáncer. No sustituimos el manejo médico: acompañamos junto a él, en coordinación con el equipo de salud tratante cuando existe.</p>
 
   <h2>🌾 Pérdida del trabajo y crisis económica</h2>
-  <p>Un espacio para la pérdida de identidad, la vergüenza y la tensión familiar que trae la crisis económica — muchas veces invisibilizada en el acompañamiento pastoral tradicional.</p>
+  <p data-cid="trabajo">Un espacio para la pérdida de identidad, la vergüenza y la tensión familiar que trae la crisis económica — muchas veces invisibilizada en el acompañamiento pastoral tradicional.</p>
 
   <h2>👨‍👩‍👧 Familias y parejas</h2>
-  <p>Un primer espacio de escucha y orientación ante conflictos de convivencia o crisis de pareja, con remisión a Comisaría de Familia o a profesionales especializados cuando el caso lo requiere.</p>
+  <p data-cid="familias">Un primer espacio de escucha y orientación ante conflictos de convivencia o crisis de pareja, con remisión a Comisaría de Familia o a profesionales especializados cuando el caso lo requiere.</p>
 </article>
 
 <footer class="site-footer">
@@ -72,5 +72,10 @@
     <div class="copy">© Diócesis de Socorro y San Gil — SEPAS</div>
   </div>
 </footer>
+
+<script type="module">
+  import { obtenerContenido, aplicarContenido } from './js/contenido.js';
+  obtenerContenido('como_acompanamos').then(aplicarContenido);
+</script>
 </body>
 </html>

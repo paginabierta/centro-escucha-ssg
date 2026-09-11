@@ -59,7 +59,7 @@
 
 <div class="pagina-cabeza wrap">
   <h1>Equipo de Apoyo</h1>
-  <p>Sacerdotes, psicólogos, trabajadores sociales y agentes de pastoral que acompañan el Centro de Escucha.</p>
+  <p data-cid="intro">Sacerdotes, psicólogos, trabajadores sociales y agentes de pastoral que acompañan el Centro de Escucha.</p>
 </div>
 
 <div class="wrap">
@@ -90,6 +90,10 @@
   </div>
 </footer>
 
+<script type="module">
+  import { obtenerContenido, aplicarContenido } from './js/contenido.js';
+  obtenerContenido('equipo_apoyo').then(aplicarContenido);
+</script>
 <script type="module">
   import { obtenerEquipoApoyo } from './js/firebase-init.js';
 
