@@ -2,6 +2,15 @@
 
 Sigue estos pasos en orden. Son los mismos que usamos para Club de Lectura.
 
+## ⚠️ Si ya tenías el sitio funcionando: actualiza las reglas de Firestore
+
+Esta versión agrega 3 colecciones nuevas (`agentes`, `citas`, `reflexiones`) al archivo `firestore.rules`. Si ya habías publicado las reglas antes, tienes que **volver a pegarlas**:
+
+1. Sube los archivos nuevos/actualizados de esta carpeta a tu repositorio en GitHub (los mismos de antes, más `agendar-cita.html`, `motivacion.html`, `js/agendar.js`, `js/agentes-data.js`, `js/reflexiones-data.js`).
+2. En Firebase Console → **Firestore Database → Reglas** → borra todo → pega el contenido actualizado de `firestore.rules` → **Publicar**.
+
+Sin este paso, el formulario de citas y la página de motivación no van a poder guardar ni leer datos.
+
 ## 1. Publicar el sitio en GitHub Pages
 
 1. Entra a GitHub con la cuenta **paginabierta**.
@@ -50,6 +59,18 @@ Firebase no permite crear cuentas de otras personas desde el panel sin un servid
 3. Entra al panel como administrador → pestaña **Accesos** → pega el UID, su correo (de referencia) y elige el rol **Agente de escucha** → Guardar.
 
 Listo — esa persona ya puede entrar y registrar casos en la bitácora, pero no puede editar las rutas ni los accesos (eso queda solo para el rol Administrador).
+
+## 7. Activar "Agendar cita" y "Motivación"
+
+Estas dos páginas públicas nuevas también dependen de Firestore. Desde el panel, como administrador:
+
+1. Pestaña **Motivación** → botón "Cargar reflexiones de ejemplo a Firestore" (una sola vez). Desde ahí puedes agregar más reflexiones cuando quieras.
+2. Pestaña **Agentes del equipo** → agrega ahí a cada sacerdote/psicólogo que quieras que aparezca como opción en el formulario de "Agendar cita", marcando qué modalidades ofrece (virtual, presencial en San Gil, presencial en su parroquia).
+3. Pestaña **Solicitudes de cita** — ahí verás lo que la gente vaya enviando desde el formulario público. Cuando confirmes un horario con la persona (por teléfono), agrégalo tú mismo a tu Google Calendar y marca la solicitud como "confirmada" en el panel.
+
+## Sobre agendar citas y Google Calendar
+
+Por ahora el formulario público solo **guarda la solicitud** — no crea el evento en Google Calendar automáticamente. Ustedes (el equipo) revisan la solicitud en el panel, confirman el horario por teléfono, y lo agregan a mano a su calendario. Si en el futuro el volumen de citas lo justifica, se puede automatizar con Google Calendar, pero eso requiere activar el plan de pago por uso de Firebase (Blaze) y una configuración bastante más técnica — lo dejamos para una fase futura.
 
 ## Notas
 

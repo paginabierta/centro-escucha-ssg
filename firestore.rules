@@ -23,6 +23,26 @@ service cloud.firestore {
       allow write: if esAdmin();
     }
 
+    // Agentes del equipo (sacerdotes/psicólogos disponibles para citas):
+    // lectura pública (el formulario los muestra), escritura solo admin.
+    match /agentes/{agenteId} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
+    // Reflexiones de la sección "Motivación": lectura pública, escritura solo admin.
+    match /reflexiones/{reflexionId} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
+    // Solicitudes de cita: CUALQUIERA puede CREAR una (es el formulario público),
+    // pero nadie externo puede leer, editar ni borrar — solo el equipo autenticado.
+    match /citas/{citaId} {
+      allow create: if true;
+      allow read, update, delete: if estaAutenticado();
+    }
+
     // Casos de la bitácora: NUNCA públicos. Solo el equipo autenticado puede leer/crear,
     // y cada agente solo ve sus propios casos (el admin ve todos, filtrado en el cliente
     // por la consulta, pero igual restringido aquí a estar autenticado).

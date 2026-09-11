@@ -3,9 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contacto — Centro de Escucha Psicoespiritual</title>
+<title>Motivación — Centro de Escucha Psicoespiritual</title>
 <link rel="icon" href="img/logo.png">
 <link rel="stylesheet" href="css/style.css">
+<style>
+  .reflexion-card {
+    max-width: 640px;
+    margin: 40px auto;
+    background: var(--crema-carta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+    padding: 40px;
+    text-align: center;
+  }
+  .reflexion-card .cita { font-family: var(--serif); font-weight: 600; color: var(--verde); font-size: 0.95rem; margin-bottom: 14px; }
+  .reflexion-card .texto { font-family: var(--serif); font-size: 1.4rem; color: var(--azul-tinta); font-style: italic; margin-bottom: 24px; line-height: 1.4; }
+  .reflexion-card .pensamiento { color: var(--gris-texto); font-size: 1rem; max-width: none; }
+</style>
 </head>
 <body>
 
@@ -18,7 +33,6 @@
     <nav class="main-nav">
       <a href="que-es-el-centro.html">Qué es</a>
       <a href="como-acompanamos.html">Cómo acompañamos</a>
-      <a href="agendar-cita.html">Agendar cita</a>
       <a href="motivacion.html">Motivación</a>
       <a href="contacto.html">Contacto</a>
       <a href="equipo/login.html" class="btn-equipo">Equipo</a>
@@ -26,19 +40,15 @@
   </div>
 </header>
 
-<div class="pagina-cabeza wrap">
-  <h1>Dónde estamos</h1>
+<div class="pagina-cabeza wrap" style="text-align:center;">
+  <h1>Una palabra para hoy</h1>
 </div>
 
-<article class="contenido-articulo wrap">
-  <p><strong>Secretariado Diocesano de Pastoral Social — SEPAS</strong><br>
-  Diócesis de Socorro y San Gil<br>
-  San Gil, Santander</p>
+<div class="reflexion-card" id="reflexion">Cargando…</div>
 
-  <p>Si tu situación es urgente, no esperes a escribirnos: consulta las <a href="index.html#buscador">líneas de emergencia</a> en la página de inicio, o acércate a la parroquia de tu municipio.</p>
-
-  <p>Para cualquier otra consulta sobre el Centro de Escucha, puedes comunicarte con SEPAS a través de los canales oficiales de la Diócesis de Socorro y San Gil.</p>
-</article>
+<div class="wrap" style="text-align:center; padding-bottom:40px;">
+  <a href="agendar-cita.html" class="btn btn-secundario">¿Necesitas hablar con alguien? Agenda una cita</a>
+</div>
 
 <footer class="site-footer">
   <div class="wrap">
@@ -52,7 +62,6 @@
       <a href="que-es-el-centro.html">Qué es el Centro</a>
       <a href="como-acompanamos.html">Cómo acompañamos</a>
       <a href="agendar-cita.html">Agendar cita</a>
-      <a href="motivacion.html">Motivación</a>
       <a href="contacto.html">Contacto</a>
     </div>
     <div class="col">
@@ -62,5 +71,16 @@
     <div class="copy">© Diócesis de Socorro y San Gil — SEPAS</div>
   </div>
 </footer>
+
+<script type="module">
+  import { obtenerReflexionDelDia } from './js/firebase-init.js';
+  obtenerReflexionDelDia().then(r => {
+    document.getElementById('reflexion').innerHTML = `
+      <div class="cita">${r.cita}</div>
+      <div class="texto">"${r.texto}"</div>
+      <div class="pensamiento">${r.pensamiento}</div>
+    `;
+  });
+</script>
 </body>
 </html>

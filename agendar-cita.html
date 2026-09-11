@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agendar una cita — Centro de Escucha Psicoespiritual</title>
+<link rel="icon" href="img/logo.png">
+<link rel="stylesheet" href="css/style.css">
+<style>.tarjeta-form.ancha { max-width: 640px; }</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="index.html" class="brand">
+      <img src="img/logo.png" alt="Centro de Escucha Psicoespiritual">
+      <span class="brand-name">Centro de Escucha Psicoespiritual<small>Diócesis de Socorro y San Gil</small></span>
+    </a>
+    <nav class="main-nav">
+      <a href="que-es-el-centro.html">Qué es</a>
+      <a href="como-acompanamos.html">Cómo acompañamos</a>
+      <a href="motivacion.html">Motivación</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="equipo/login.html" class="btn-equipo">Equipo</a>
+    </nav>
+  </div>
+</header>
+
+<div class="tarjeta-form ancha">
+  <h1>Agendar una cita</h1>
+  <p style="text-align:center; font-size:0.9rem;">Cuéntanos un poco de tu situación y te contactaremos para confirmar el horario.</p>
+
+  <p id="aviso-emergencia" style="background:#FFF3E0; border:1px solid #E8C77F; border-radius:8px; padding:12px 14px; font-size:0.85rem; color:#5B615C;">
+    Si tu situación es urgente y no puede esperar, mejor llama directamente a una <a href="index.html#buscador">línea de emergencia</a> — este formulario no es para crisis inmediatas.
+  </p>
+
+  <form id="form-cita">
+    <div class="campo">
+      <label for="c-nombre">Tu nombre</label>
+      <input type="text" id="c-nombre" required>
+    </div>
+    <div class="campo">
+      <label for="c-contacto">Teléfono o correo de contacto</label>
+      <input type="text" id="c-contacto" required>
+    </div>
+    <div class="campo">
+      <label for="c-municipio">Tu municipio</label>
+      <select id="c-municipio" required></select>
+    </div>
+    <div class="campo">
+      <label for="c-modalidad">Modalidad preferida</label>
+      <select id="c-modalidad" required>
+        <option value="presencial-sangil">Presencial en San Gil (sede de SEPAS)</option>
+        <option value="presencial-parroquia">Presencial en mi parroquia</option>
+        <option value="virtual">Virtual</option>
+      </select>
+    </div>
+    <div class="campo">
+      <label for="c-agente">Con quién te gustaría hablar</label>
+      <select id="c-agente"></select>
+    </div>
+    <div class="campo">
+      <label for="c-fecha">Fecha y horario que te funciona (aproximado)</label>
+      <input type="text" id="c-fecha" placeholder="Ej. Martes en la tarde, cualquier día de la próxima semana…" required>
+    </div>
+    <div class="campo">
+      <label for="c-motivo">¿Sobre qué te gustaría hablar? (opcional)</label>
+      <textarea id="c-motivo" placeholder="Solo si quieres contarnos algo antes de la cita."></textarea>
+    </div>
+    <button type="submit" class="btn btn-primario" style="width:100%;">Enviar solicitud</button>
+    <div class="form-msg" id="msg-cita"></div>
+  </form>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="col">
+      <h4>Centro de Escucha Psicoespiritual</h4>
+      <p>Secretariado Diocesano de Pastoral Social — SEPAS</p>
+      <p>Diócesis de Socorro y San Gil</p>
+    </div>
+    <div class="col">
+      <h4>Navegación</h4>
+      <a href="que-es-el-centro.html">Qué es el Centro</a>
+      <a href="como-acompanamos.html">Cómo acompañamos</a>
+      <a href="agendar-cita.html">Agendar cita</a>
+      <a href="motivacion.html">Motivación</a>
+      <a href="contacto.html">Contacto</a>
+    </div>
+    <div class="col">
+      <h4>Equipo</h4>
+      <a href="equipo/login.html">Iniciar sesión</a>
+    </div>
+    <div class="copy">© Diócesis de Socorro y San Gil — SEPAS</div>
+  </div>
+</footer>
+
+<script type="module" src="js/agendar.js"></script>
+</body>
+</html>

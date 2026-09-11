@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel del equipo — Centro de Escucha Psicoespiritual</title>
+<link rel="icon" href="../img/logo.png">
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .panel-wrap { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+  .panel-top { display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; flex-wrap: wrap; gap: 10px; }
+  .panel-top .quien { font-size: 0.85rem; color: var(--gris-texto); }
+  .tabs { display:flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--borde); }
+  .tab { padding: 10px 16px; cursor:pointer; font-weight:600; font-size:0.9rem; color: var(--gris-texto); border-bottom: 2px solid transparent; }
+  .tab.activo { color: var(--azul); border-color: var(--dorado); }
+  .panel-seccion { display:none; }
+  .panel-seccion.activo { display:block; }
+  table.tabla-panel { width:100%; border-collapse: collapse; font-size: 0.85rem; }
+  table.tabla-panel th, table.tabla-panel td { border: 1px solid var(--borde); padding: 8px 10px; text-align:left; }
+  table.tabla-panel th { background: var(--verde-claro); }
+  table.tabla-panel input, table.tabla-panel select { width:100%; border:1px solid var(--borde); border-radius:4px; padding:5px 6px; font-size:0.82rem; font-family: var(--sans); }
+  .fila-guardar { background: var(--dorado); border:none; border-radius:4px; padding:5px 10px; font-weight:600; cursor:pointer; font-size:0.8rem; }
+  .lista-casos .caso { border-bottom:1px solid var(--borde); padding: 12px 0; }
+  .lista-casos .caso .meta { font-size:0.78rem; color: var(--gris-texto); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="../index.html" class="brand">
+      <img src="../img/logo.png" alt="Centro de Escucha Psicoespiritual">
+      <span class="brand-name">Centro de Escucha Psicoespiritual<small>Panel del equipo</small></span>
+    </a>
+    <button class="btn-equipo" id="btn-salir" style="background:none;">Cerrar sesión</button>
+  </div>
+</header>
+
+<div class="panel-wrap">
+  <div class="panel-top">
+    <h1 style="margin:0; font-size:1.4rem;">Panel del equipo</h1>
+    <div class="quien" id="quien-soy">Verificando sesión…</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab activo" data-tab="bitacora">Bitácora de casos</div>
+    <div class="tab" data-tab="citas">Solicitudes de cita</div>
+    <div class="tab" data-tab="rutas" id="tab-rutas" style="display:none;">Rutas por municipio</div>
+    <div class="tab" data-tab="agentes" id="tab-agentes" style="display:none;">Agentes del equipo</div>
+    <div class="tab" data-tab="motivacion" id="tab-motivacion" style="display:none;">Motivación</div>
+    <div class="tab" data-tab="accesos" id="tab-accesos" style="display:none;">Accesos</div>
+  </div>
+
+  <!-- BITÁCORA -->
+  <section class="panel-seccion activo" id="sec-bitacora">
+    <form id="form-caso" style="background:white; border:1px solid var(--borde); border-radius:10px; padding:20px; margin-bottom:24px;">
+      <div class="campo">
+        <label>Municipio</label>
+        <select id="caso-municipio" required></select>
+      </div>
+      <div class="campo">
+        <label>Modo de contacto</label>
+        <select id="caso-modo">
+          <option>Presencial</option>
+          <option>Telefónico</option>
+          <option>Virtual</option>
+        </select>
+      </div>
+      <div class="campo">
+        <label>Motivo (breve)</label>
+        <input type="text" id="caso-motivo" placeholder="Ej. Duelo, soledad, orientación familiar…" required>
+      </div>
+      <div class="campo">
+        <label>Notas (confidencial, solo visible aquí)</label>
+        <textarea id="caso-notas"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primario">Registrar caso</button>
+      <div class="form-msg" id="msg-caso"></div>
+    </form>
+
+    <h3>Casos recientes</h3>
+    <div class="lista-casos" id="lista-casos">Cargando…</div>
+  </section>
+
+  <!-- RUTAS (solo admin) -->
+  <section class="panel-seccion" id="sec-rutas">
+    <p style="font-size:0.85rem;">Edita el párroco, teléfono u hospital de cada municipio. Los cambios se guardan al hacer clic en "Guardar" de cada fila.</p>
+    <button class="btn btn-secundario" id="btn-cargar-semilla" style="margin-bottom:16px;">Cargar datos de ejemplo a Firestore (una sola vez)</button>
+    <div style="overflow-x:auto;">
+      <table class="tabla-panel" id="tabla-rutas">
+        <thead><tr><th>Municipio</th><th>Parroquia</th><th>Párroco</th><th>Teléfono</th><th>Hospital / C. Salud</th><th></th></tr></thead>
+        <tbody id="tabla-rutas-body"><tr><td colspan="6">Cargando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- CITAS (todo el equipo) -->
+  <section class="panel-seccion" id="sec-citas">
+    <p style="font-size:0.85rem;">Solicitudes enviadas desde el formulario público. Al confirmar una cita, agrégala tú mismo a tu Google Calendar.</p>
+    <div id="lista-citas">Cargando…</div>
+  </section>
+
+  <!-- AGENTES (solo admin) -->
+  <section class="panel-seccion" id="sec-agentes">
+    <p style="font-size:0.85rem;">Quiénes aparecen como opción en el formulario público de "Agendar cita".</p>
+    <form id="form-agente" style="background:white; border:1px solid var(--borde); border-radius:10px; padding:18px; margin-bottom:20px;">
+      <div class="campo"><label>Nombre</label><input type="text" id="ag-nombre" required placeholder="Ej. Pbro. Nombre Apellido"></div>
+      <div class="campo"><label>Sede / parroquia</label><input type="text" id="ag-sede" required placeholder="Ej. Parroquia San Pedro Apóstol, Vado Real"></div>
+      <div class="campo">
+        <label>Modalidades que ofrece</label>
+        <label style="font-weight:400; display:inline-block; margin-right:14px;"><input type="checkbox" id="ag-mod-virtual" style="width:auto;"> Virtual</label>
+        <label style="font-weight:400; display:inline-block; margin-right:14px;"><input type="checkbox" id="ag-mod-sangil" style="width:auto;"> Presencial en San Gil</label>
+        <label style="font-weight:400; display:inline-block;"><input type="checkbox" id="ag-mod-parroquia" style="width:auto;"> Presencial en su parroquia</label>
+      </div>
+      <button type="submit" class="btn btn-primario">Agregar al equipo</button>
+      <div class="form-msg" id="msg-agente"></div>
+    </form>
+    <div id="lista-agentes">Cargando…</div>
+  </section>
+
+  <!-- MOTIVACIÓN (solo admin) -->
+  <section class="panel-seccion" id="sec-motivacion">
+    <p style="font-size:0.85rem;">Frases/reflexiones que rotan en la página pública "Motivación", una por día.</p>
+    <button class="btn btn-secundario" id="btn-cargar-reflexiones" style="margin-bottom:16px;">Cargar reflexiones de ejemplo a Firestore (una sola vez)</button>
+    <form id="form-reflexion" style="background:white; border:1px solid var(--borde); border-radius:10px; padding:18px; margin-bottom:20px;">
+      <div class="campo"><label>Cita bíblica</label><input type="text" id="rf-cita" required placeholder="Ej. Salmo 23, 4"></div>
+      <div class="campo"><label>Texto</label><input type="text" id="rf-texto" required></div>
+      <div class="campo"><label>Pensamiento breve</label><textarea id="rf-pensamiento" required></textarea></div>
+      <button type="submit" class="btn btn-primario">Agregar reflexión</button>
+      <div class="form-msg" id="msg-reflexion"></div>
+    </form>
+    <div id="lista-reflexiones">Cargando…</div>
+  </section>
+
+  <!-- ACCESOS (solo admin) -->
+  <section class="panel-seccion" id="sec-accesos">
+    <p style="font-size:0.85rem;">Para crear una cuenta nueva de agente, créala primero en la consola de Firebase (Authentication → Add user) y luego asigna aquí su rol usando su UID (lo copias de esa misma consola).</p>
+    <form id="form-rol" style="max-width:420px;">
+      <div class="campo"><label>UID del usuario</label><input type="text" id="rol-uid" required></div>
+      <div class="campo"><label>Correo (referencia)</label><input type="email" id="rol-correo"></div>
+      <div class="campo">
+        <label>Rol</label>
+        <select id="rol-valor">
+          <option value="agente">Agente de escucha</option>
+          <option value="admin">Administrador</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primario">Guardar acceso</button>
+      <div class="form-msg" id="msg-rol"></div>
+    </form>
+  </section>
+</div>
+
+<script type="module" src="../js/panel.js"></script>
+</body>
+</html>
