@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acceso del equipo — Centro de Escucha Psicoespiritual</title>
+<link rel="icon" href="../img/logo.png">
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a href="../index.html" class="brand">
+      <img src="../img/logo.png" alt="Centro de Escucha Psicoespiritual">
+      <span class="brand-name">Centro de Escucha Psicoespiritual<small>Diócesis de Socorro y San Gil</small></span>
+    </a>
+  </div>
+</header>
+
+<div class="tarjeta-form">
+  <h1>Acceso del equipo</h1>
+  <p style="text-align:center; font-size:0.88rem;">Solo para agentes del Centro de Escucha y administración de SEPAS.</p>
+
+  <form id="form-login">
+    <div class="campo">
+      <label for="correo">Correo</label>
+      <input type="email" id="correo" required autocomplete="username">
+    </div>
+    <div class="campo">
+      <label for="clave">Contraseña</label>
+      <input type="password" id="clave" required autocomplete="current-password">
+    </div>
+    <button type="submit" class="btn btn-primario" style="width:100%;">Entrar</button>
+    <div class="form-msg" id="msg"></div>
+  </form>
+</div>
+
+<script type="module">
+  import { FIREBASE_LISTO, auth } from '../js/firebase-init.js';
+
+  const form = document.getElementById('form-login');
+  const msg = document.getElementById('msg');
+
+  if (!FIREBASE_LISTO) {
+    msg.textContent = 'El acceso del equipo aún no está activado — falta conectar Firebase (ver SETUP.md).';
+    msg.className = 'form-msg error';
+    form.querySelector('button').disabled = true;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msg.textContent = '';
+    const correo = document.getElementById('correo').value;
+    const clave = document.getElementById('clave').value;
+    try {
+      const { signInWithEmailAndPassword } = window.__fb.authMod;
+      await signInWithEmailAndPassword(auth, correo, clave);
+      window.location.href = 'panel.html';
+    } catch (err) {
+      msg.textContent = 'Correo o contraseña incorrectos.';
+      msg.className = 'form-msg error';
+    }
+  });
+</script>
+</body>
+</html>

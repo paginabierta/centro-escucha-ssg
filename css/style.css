@@ -1,0 +1,326 @@
+/* ============================================
+   CENTRO DE ESCUCHA PSICOESPIRITUAL — SEPAS
+   Diócesis de Socorro y San Gil
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --verde: #0E7A4D;
+  --verde-claro: #E8F5EE;
+  --verde-vivo: #14A367;
+  --azul: #094985;
+  --azul-tinta: #0B3866;
+  --dorado: #E8C77F;
+  --dorado-oscuro: #C9A356;
+  --crema: #FBF8F2;
+  --crema-carta: #FFFFFF;
+  --carbon: #2A2E2B;
+  --gris-texto: #5B615C;
+  --borde: #E3DFD3;
+
+  --serif: 'Lora', Georgia, serif;
+  --sans: 'Work Sans', -apple-system, sans-serif;
+
+  --radio: 10px;
+  --sombra: 0 2px 14px rgba(9, 73, 133, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--carbon);
+  background: var(--crema);
+  line-height: 1.55;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--serif);
+  font-weight: 600;
+  color: var(--azul-tinta);
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+}
+
+p { margin: 0 0 1em; max-width: 62ch; color: var(--gris-texto); }
+
+a { color: var(--verde); }
+
+img { max-width: 100%; display: block; }
+
+/* ---------- Layout shell ---------- */
+
+.wrap {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+header.site-header {
+  background: var(--crema-carta);
+  border-bottom: 1px solid var(--borde);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.brand img { height: 46px; width: 46px; }
+.brand-name {
+  font-family: var(--serif);
+  font-weight: 700;
+  color: var(--azul-tinta);
+  font-size: 1.05rem;
+  line-height: 1.15;
+}
+.brand-name small {
+  display: block;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--gris-texto);
+  letter-spacing: 0.02em;
+}
+
+nav.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+nav.main-nav a {
+  text-decoration: none;
+  color: var(--carbon);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+nav.main-nav a:hover { color: var(--verde); }
+
+.btn-equipo {
+  border: 1.5px solid var(--azul);
+  color: var(--azul) !important;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 0.88rem !important;
+}
+.btn-equipo:hover { background: var(--azul); color: white !important; }
+
+.nav-toggle { display: none; }
+
+/* ---------- Hero + buscador (la pieza central) ---------- */
+
+.hero {
+  padding: 64px 0 56px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  max-width: 16ch;
+  margin: 0 auto 14px;
+}
+.hero .sub {
+  max-width: 46ch;
+  margin: 0 auto 36px;
+  color: var(--gris-texto);
+  font-size: 1.05rem;
+}
+
+.buscador {
+  max-width: 620px;
+  margin: 0 auto;
+  background: var(--crema-carta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 22px;
+  text-align: left;
+}
+.buscador label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--azul-tinta);
+  margin-bottom: 8px;
+}
+.buscador select {
+  width: 100%;
+  padding: 13px 14px;
+  font-size: 1rem;
+  font-family: var(--sans);
+  border: 1.5px solid var(--borde);
+  border-radius: 8px;
+  background: var(--crema);
+  color: var(--carbon);
+}
+.buscador select:focus, input:focus, textarea:focus, button:focus-visible {
+  outline: 3px solid var(--dorado);
+  outline-offset: 1px;
+}
+
+.resultado-ruta {
+  margin-top: 18px;
+  display: none;
+}
+.resultado-ruta.activo { display: block; animation: aparecer 0.25s ease; }
+@keyframes aparecer { from { opacity:0; transform: translateY(4px);} to {opacity:1; transform:none;} }
+
+.ruta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--borde);
+}
+.ruta-item:first-child { border-top: none; }
+.ruta-icono {
+  flex: 0 0 auto;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--verde-claro);
+  color: var(--verde);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+.ruta-texto .rotulo { font-size: 0.78rem; color: var(--gris-texto); font-weight: 500; }
+.ruta-texto .valor { font-weight: 600; color: var(--carbon); font-size: 0.98rem; }
+.ruta-texto .valor.vacio { color: var(--gris-texto); font-weight: 400; font-style: italic; }
+
+/* ---------- Secciones ---------- */
+
+section.bloque { padding: 52px 0; }
+section.bloque.alt { background: var(--crema-carta); border-top: 1px solid var(--borde); border-bottom: 1px solid var(--borde); }
+
+.bloque-cabeza { max-width: 60ch; margin-bottom: 32px; }
+.bloque-cabeza h2 { font-size: 1.7rem; }
+
+/* Focos grid */
+.focos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 22px;
+}
+.foco-card {
+  background: var(--crema-carta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  padding: 22px;
+}
+.foco-card .icono { font-size: 1.6rem; margin-bottom: 10px; display: block; }
+.foco-card h3 { font-size: 1.05rem; margin-bottom: 6px; }
+.foco-card p { font-size: 0.92rem; margin-bottom: 0; }
+
+/* Líneas de emergencia — siempre visibles */
+.emergencia-banda {
+  background: var(--azul);
+  color: white;
+}
+.emergencia-banda .wrap { padding: 26px 24px; }
+.emergencia-banda h2 { color: white; font-size: 1.15rem; margin-bottom: 14px; }
+.lineas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+.linea-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.linea-card .num { font-family: var(--serif); font-weight: 700; font-size: 1.4rem; color: var(--dorado); }
+.linea-card .desc { font-size: 0.82rem; color: rgba(255,255,255,0.85); }
+
+/* Botones */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  font-family: var(--sans);
+}
+.btn-primario { background: var(--dorado); color: var(--azul-tinta); }
+.btn-primario:hover { background: var(--dorado-oscuro); }
+.btn-secundario { background: transparent; border: 1.5px solid var(--azul); color: var(--azul); }
+.btn-secundario:hover { background: var(--azul); color: white; }
+
+/* Contenido de página interna */
+.pagina-cabeza { padding: 48px 0 12px; }
+.pagina-cabeza h1 { font-size: 2.1rem; max-width: 22ch; }
+.contenido-articulo { padding-bottom: 56px; }
+.contenido-articulo h2 { font-size: 1.3rem; margin-top: 1.6em; }
+.contenido-articulo ul { color: var(--gris-texto); padding-left: 1.2em; }
+.contenido-articulo li { margin-bottom: 0.5em; }
+
+/* Formularios (login, contacto, panel) */
+.tarjeta-form {
+  max-width: 440px;
+  margin: 40px auto;
+  background: var(--crema-carta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  padding: 34px;
+}
+.tarjeta-form h1 { font-size: 1.5rem; text-align: center; }
+.campo { margin-bottom: 16px; }
+.campo label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; color: var(--azul-tinta); }
+.campo input, .campo textarea, .campo select {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1.5px solid var(--borde);
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  background: var(--crema);
+}
+.campo textarea { resize: vertical; min-height: 90px; }
+.form-msg { font-size: 0.85rem; margin-top: 10px; }
+.form-msg.error { color: #B23A2E; }
+.form-msg.ok { color: var(--verde); }
+
+/* Footer */
+footer.site-footer {
+  background: var(--azul-tinta);
+  color: rgba(255,255,255,0.75);
+  padding: 40px 0 28px;
+  margin-top: 40px;
+}
+footer.site-footer a { color: white; }
+footer.site-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px; }
+footer.site-footer .col h4 { color: white; font-size: 0.9rem; margin-bottom: 10px; }
+footer.site-footer .col p, footer.site-footer .col a { font-size: 0.85rem; display: block; margin-bottom: 4px; }
+footer .copy { width: 100%; border-top: 1px solid rgba(255,255,255,0.15); margin-top: 20px; padding-top: 16px; font-size: 0.78rem; text-align: center; }
+
+@media (max-width: 720px) {
+  nav.main-nav { display: none; }
+  .focos-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .focos-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .resultado-ruta.activo { animation: none; }
+}
