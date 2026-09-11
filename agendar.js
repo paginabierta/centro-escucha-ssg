@@ -28,7 +28,8 @@ form.addEventListener('submit', async (e) => {
   try {
     await crearSolicitudCita({
       nombre: document.getElementById('c-nombre').value,
-      contacto: document.getElementById('c-contacto').value,
+      telefono: document.getElementById('c-telefono').value,
+      correo: document.getElementById('c-correo').value,
       municipio: document.getElementById('c-municipio').value,
       modalidad: document.getElementById('c-modalidad').value,
       agente: document.getElementById('c-agente').selectedOptions[0]?.textContent || 'Quien esté disponible',
