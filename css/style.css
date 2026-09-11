@@ -103,13 +103,15 @@ header.site-header {
 nav.main-nav {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 16px;
+  flex-wrap: nowrap;
 }
 nav.main-nav a {
   text-decoration: none;
   color: var(--carbon);
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 0.88rem;
+  white-space: nowrap;
 }
 nav.main-nav a:hover { color: var(--verde); }
 
@@ -312,7 +314,7 @@ footer.site-footer .col h4 { color: white; font-size: 0.9rem; margin-bottom: 10p
 footer.site-footer .col p, footer.site-footer .col a { font-size: 0.85rem; display: block; margin-bottom: 4px; }
 footer .copy { width: 100%; border-top: 1px solid rgba(255,255,255,0.15); margin-top: 20px; padding-top: 16px; font-size: 0.78rem; text-align: center; }
 
-@media (max-width: 720px) {
+@media (max-width: 860px) {
   nav.main-nav { display: none; }
   .focos-grid { grid-template-columns: 1fr 1fr; }
 }
