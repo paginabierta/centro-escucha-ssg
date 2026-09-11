@@ -1,5 +1,6 @@
-import { FIREBASE_LISTO, auth, db, obtenerRutas } from './firebase-init.js';
+import { FIREBASE_LISTO, auth, db, obtenerRutas, obtenerAgentes } from './firebase-init.js';
 import RUTAS_SEED from './rutas-data.js';
+import REFLEXIONES_SEED from './reflexiones-data.js';
 
 if (!FIREBASE_LISTO) {
   document.querySelector('.panel-wrap').innerHTML =
@@ -30,11 +31,15 @@ onAuthStateChanged(auth, async (user) => {
 
   if (rolActual === 'admin') {
     document.getElementById('tab-rutas').style.display = 'block';
+    document.getElementById('tab-agentes').style.display = 'block';
+    document.getElementById('tab-equipoapoyo').style.display = 'block';
+    document.getElementById('tab-motivacion').style.display = 'block';
     document.getElementById('tab-accesos').style.display = 'block';
   }
 
   await cargarMunicipiosEnSelector();
   await cargarCasos();
+  await cargarCitas();
 });
 
 // ---------- Tabs ----------
@@ -45,6 +50,9 @@ document.querySelectorAll('.tab').forEach(tab => {
     tab.classList.add('activo');
     document.getElementById('sec-' + tab.dataset.tab).classList.add('activo');
     if (tab.dataset.tab === 'rutas') cargarTablaRutas();
+    if (tab.dataset.tab === 'agentes') cargarListaAgentes();
+    if (tab.dataset.tab === 'equipoapoyo') cargarListaEquipoApoyo();
+    if (tab.dataset.tab === 'motivacion') cargarListaReflexiones();
   });
 });
 
@@ -145,6 +153,152 @@ document.getElementById('btn-cargar-semilla').addEventListener('click', async ()
   }
   alert('Datos de ejemplo cargados.');
   cargarTablaRutas();
+});
+
+// ---------- Citas (todo el equipo) ----------
+async function cargarCitas() {
+  const cont = document.getElementById('lista-citas');
+  try {
+    const q = query(collection(db, 'citas'), orderBy('creado', 'desc'), limit(30));
+    const snap = await getDocs(q);
+    if (snap.empty) { cont.innerHTML = '<p style="font-size:0.85rem; color:var(--gris-texto);">Aún no hay solicitudes de cita.</p>'; return; }
+    cont.innerHTML = snap.docs.map(d => {
+      const c = d.data();
+      const fecha = c.creado?.toDate ? c.creado.toDate().toLocaleString('es-CO') : '—';
+      const modalidadTexto = { 'presencial-sangil': 'Presencial en San Gil', 'presencial-parroquia': 'Presencial en su parroquia', 'virtual': 'Virtual' }[c.modalidad] || c.modalidad;
+      return `<div class="caso">
+        <strong>${c.nombre}</strong> — ${modalidadTexto} con ${c.agente || 'quien esté disponible'}
+        <div class="meta">${c.municipio} · Prefiere: ${c.fechaPreferida} · Tel: ${c.telefono || '—'}${c.correo ? ' · Correo: ' + c.correo : ''} · Solicitado ${fecha} · Estado: ${c.estado}</div>
+        ${c.motivo ? `<div class="meta">Motivo: ${c.motivo}</div>` : ''}
+        ${c.estado === 'pendiente' ? `<button class="fila-guardar" data-id="${d.id}" style="margin-top:6px;">Marcar como confirmada</button>` : ''}
+      </div>`;
+    }).join('');
+    cont.querySelectorAll('button[data-id]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        await setDoc(doc(db, 'citas', btn.dataset.id), { estado: 'confirmada' }, { merge: true });
+        cargarCitas();
+      });
+    });
+  } catch (err) {
+    cont.innerHTML = `<p class="form-msg error">Error al cargar citas: ${err.message}</p>`;
+  }
+}
+
+// ---------- Agentes del equipo (admin) ----------
+async function cargarListaAgentes() {
+  const cont = document.getElementById('lista-agentes');
+  const agentes = await obtenerAgentes();
+  if (!agentes.length) { cont.innerHTML = '<p style="font-size:0.85rem;">Sin agentes registrados aún.</p>'; return; }
+  cont.innerHTML = agentes.map(a => `
+    <div class="caso">
+      <strong>${a.nombre}</strong>
+      <div class="meta">${a.sede} · ${(a.modalidades || []).join(', ')}</div>
+    </div>`).join('');
+}
+
+document.getElementById('form-agente')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('msg-agente');
+  const modalidades = [];
+  if (document.getElementById('ag-mod-virtual').checked) modalidades.push('virtual');
+  if (document.getElementById('ag-mod-sangil').checked) modalidades.push('presencial-sangil');
+  if (document.getElementById('ag-mod-parroquia').checked) modalidades.push('presencial-parroquia');
+  try {
+    await addDoc(collection(db, 'agentes'), {
+      nombre: document.getElementById('ag-nombre').value,
+      sede: document.getElementById('ag-sede').value,
+      modalidades,
+      activo: true,
+    });
+    msg.textContent = 'Agente agregado.';
+    msg.className = 'form-msg ok';
+    e.target.reset();
+    cargarListaAgentes();
+  } catch (err) {
+    msg.textContent = 'Error: ' + err.message;
+    msg.className = 'form-msg error';
+  }
+});
+
+// ---------- Equipo de Apoyo (admin) ----------
+async function cargarListaEquipoApoyo() {
+  const cont = document.getElementById('lista-equipoapoyo');
+  try {
+    const snap = await getDocs(collection(db, 'equipo_apoyo'));
+    if (snap.empty) { cont.innerHTML = '<p style="font-size:0.85rem;">Aún no hay nadie registrado.</p>'; return; }
+    cont.innerHTML = snap.docs.map(d => {
+      const m = d.data();
+      return `<div class="caso">
+        <strong>${m.nombre}</strong> — ${m.cargo}
+        <div class="meta">${m.telefono || '—'} · ${m.correo || '—'}</div>
+      </div>`;
+    }).join('');
+  } catch (err) {
+    cont.innerHTML = `<p class="form-msg error">Error: ${err.message}</p>`;
+  }
+}
+
+document.getElementById('form-equipoapoyo')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('msg-equipoapoyo');
+  try {
+    await addDoc(collection(db, 'equipo_apoyo'), {
+      nombre: document.getElementById('ea-nombre').value,
+      cargo: document.getElementById('ea-cargo').value,
+      telefono: document.getElementById('ea-telefono').value,
+      correo: document.getElementById('ea-correo').value,
+      activo: true,
+    });
+    msg.textContent = 'Agregado al equipo de apoyo.';
+    msg.className = 'form-msg ok';
+    e.target.reset();
+    cargarListaEquipoApoyo();
+  } catch (err) {
+    msg.textContent = 'Error: ' + err.message;
+    msg.className = 'form-msg error';
+  }
+});
+
+// ---------- Motivación / reflexiones (admin) ----------
+async function cargarListaReflexiones() {
+  const cont = document.getElementById('lista-reflexiones');
+  try {
+    const snap = await getDocs(collection(db, 'reflexiones'));
+    if (snap.empty) { cont.innerHTML = '<p style="font-size:0.85rem;">Aún no hay reflexiones en Firestore (usando las de ejemplo mientras tanto).</p>'; return; }
+    cont.innerHTML = snap.docs.map(d => {
+      const r = d.data();
+      return `<div class="caso"><strong>${r.cita}</strong><div class="meta">"${r.texto}"</div><div class="meta">${r.pensamiento}</div></div>`;
+    }).join('');
+  } catch (err) {
+    cont.innerHTML = `<p class="form-msg error">Error: ${err.message}</p>`;
+  }
+}
+
+document.getElementById('btn-cargar-reflexiones')?.addEventListener('click', async () => {
+  for (const r of REFLEXIONES_SEED) {
+    await addDoc(collection(db, 'reflexiones'), r);
+  }
+  alert('Reflexiones de ejemplo cargadas.');
+  cargarListaReflexiones();
+});
+
+document.getElementById('form-reflexion')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('msg-reflexion');
+  try {
+    await addDoc(collection(db, 'reflexiones'), {
+      cita: document.getElementById('rf-cita').value,
+      texto: document.getElementById('rf-texto').value,
+      pensamiento: document.getElementById('rf-pensamiento').value,
+    });
+    msg.textContent = 'Reflexión agregada.';
+    msg.className = 'form-msg ok';
+    e.target.reset();
+    cargarListaReflexiones();
+  } catch (err) {
+    msg.textContent = 'Error: ' + err.message;
+    msg.className = 'form-msg error';
+  }
 });
 
 // ---------- Accesos (admin) ----------
