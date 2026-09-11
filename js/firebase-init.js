@@ -62,6 +62,19 @@ export async function obtenerReflexionDelDia() {
   return lista[diaDelAno % lista.length];
 }
 
+export async function obtenerEquipoApoyo() {
+  if (!FIREBASE_LISTO) return [];
+  try {
+    const { collection, getDocs, query, where } = window.__fb.fsMod;
+    const q = query(collection(db, "equipo_apoyo"), where("activo", "==", true));
+    const snap = await getDocs(q);
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch (e) {
+    console.warn("No se pudo leer el equipo de apoyo:", e);
+    return [];
+  }
+}
+
 export async function crearSolicitudCita(datos) {
   const { collection, addDoc, serverTimestamp } = window.__fb.fsMod;
   return addDoc(collection(db, "citas"), {
