@@ -30,6 +30,12 @@ service cloud.firestore {
       allow write: if esAdmin();
     }
 
+    // Textos editables de cada página pública: lectura pública, escritura solo admin.
+    match /contenido/{paginaId} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
     // Configuración de tema (paleta de colores y tipografía del sitio):
     // lectura pública (todas las páginas la aplican), escritura solo admin.
     match /configuracion/{docId} {
