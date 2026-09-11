@@ -28,3 +28,19 @@ const RUTAS_SEED = [
   {"municipio":"Olival (corr. de Suaita)","parroquia":"San Rafael Arcángel","parroco":"Pbro. Wilman Enrique Barragán Flórez","telefono":"304 554 2080","hospital":"Puesto de Salud Olival (E.S.E. Caicedo y Flórez) (312 378 3300 / 321 477 0856)"},
   {"municipio":"Onzaga","parroquia":"Inmaculada Concepción","parroco":"Pbro. Ciprián Cáceres Velandia","telefono":"320 866 0059","hospital":"E.S.E. Hospital Integrado de Onzaga (320 833 7237 / 310 487 2465)"},
   {"municipio":"Palmas del Socorro","parroquia":"Inmaculada Concepción","parroco":"Pbro. Luis Alcides Higuera Tamayo","telefono":"316 581 0636","hospital":"Nodo Puesto de Salud Palmas (E.S.E. Manuela Beltrán) (316 379 4444 / 607 727 4000 Ext. 9)"},
+  {"municipio":"Páramo","parroquia":"Ntra. Sra. del Rosario de Chiquinquirá","parroco":"Pbro. Eduardo Bohórquez Orduz","telefono":"320 853 5085","hospital":"E.S.E. Centro de Salud Páramo (725 8920)"},
+  {"municipio":"Pinchote","parroquia":"San Antonio de Padua","parroco":"Pbro. Eliécer Delgado Pico","telefono":"314 435 8002","hospital":"IPS Centro de Salud San Antonio de Padua (313 893 5209 / 607 724 7197)"},
+  {"municipio":"Pitiguao","parroquia":"Santo Cura de Ars","parroco":"Pbro. Fabián Aníbal López Castillo","telefono":"316 693 3794","hospital":"Puesto de Salud Mogotes / San Gil (Red de referencia) (607 724 9800)"},
+  {"municipio":"Riachuelo (corr. de Charalá)","parroquia":"Ntra. Sra. del Rosario","parroco":"Pbro. Víctor Alfonso Fonseca Hernández","telefono":"302 280 4330","hospital":"Puesto de Salud Riachuelo (E.S.E. Hosp. Charalá) (321 207 9761 / 311 471 4399)"},
+  {"municipio":"San Gil","parroquia":"10 parroquias (ver detalle)","parroco":"Contacto coordinador — Pendiente definir","telefono":"Por definir","hospital":"E.S.E. Hospital Regional de San Gil (724 9800)"},
+  {"municipio":"San Joaquín","parroquia":"San Joaquín","parroco":"Pbro. Hugo Fernando Díaz","telefono":"311 284 1059","hospital":"E.S.E. Centro de Salud San Joaquín (607 724 9800)"},
+  {"municipio":"San José de Suaita","parroquia":"San José de Suaita","parroco":"Pbro. Jesús Aurelio Gómez","telefono":"Pendiente","hospital":"Puesto de Salud San José de Suaita (E.S.E. Caicedo y Flórez) (312 378 3300 / 321 477 0856)"},
+  {"municipio":"Simacota","parroquia":"Santa Bárbara","parroco":"Pbro. Alfonso Muñoz Muñoz","telefono":"313 392 8104","hospital":"E.S.E. Hospital Integrado San Roque (312 587 4367 / 350 295 6389)"},
+  {"municipio":"Suaita","parroquia":"Ntra. Sra. de la Candelaria","parroco":"Pbro. Hernando Pimiento Mantilla","telefono":"311 892 4012","hospital":"E.S.E. Hospital Caicedo y Flórez (312 378 3300 / 321 477 0856)"},
+  {"municipio":"Vado Real (corr. de Suaita)","parroquia":"San Pedro Apóstol","parroco":"Pbro. Herwin D. Almeida","telefono":"323 233 0772","hospital":"Puesto de Salud Vado Real (E.S.E. Hosp. Caicedo y Flórez) (312 378 3300 / 321 477 0856)"},
+  {"municipio":"Valle de San José","parroquia":"Ntra. Sra. de la Purificación","parroco":"Pbro. Isaías Silva Cárdenas","telefono":"312 481 0293","hospital":"E.S.E. Centro de Salud Valle de San José (607 724 9800)"},
+  {"municipio":"Villanueva","parroquia":"San Luis Gonzaga","parroco":"Pbro. Miguel Ángel Jerez Cifuentes","telefono":"314 362 9015","hospital":"E.S.E. Centro de Salud Camilo Rueda (316 830 4338 / 320 886 5606)"},
+  {"municipio":"Zapatoca","parroquia":"San Joaquín","parroco":"Pbro. Ángel de Jesús Fonseca Useda","telefono":"(607) 625 2102 / 313 812 4091","hospital":"E.S.E. Hospital Integrado La Merced Zapatoca (625 2255) — Provincia Metropolitana"}
+];
+
+export default RUTAS_SEED;
