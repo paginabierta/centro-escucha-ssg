@@ -3,23 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Motivación — Centro de Escucha Psicoespiritual</title>
+<title>Equipo de Apoyo — Centro de Escucha Psicoespiritual</title>
 <link rel="icon" href="img/logo.png">
 <link rel="stylesheet" href="css/style.css">
 <style>
-  .reflexion-card {
-    max-width: 640px;
-    margin: 40px auto;
+  .equipo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    padding-bottom: 48px;
+  }
+  .equipo-card {
     background: var(--crema-carta);
     border: 1px solid var(--borde);
     border-radius: var(--radio);
-    box-shadow: var(--sombra);
-    padding: 40px;
-    text-align: center;
+    padding: 22px;
   }
-  .reflexion-card .cita { font-family: var(--serif); font-weight: 600; color: var(--verde); font-size: 0.95rem; margin-bottom: 14px; }
-  .reflexion-card .texto { font-family: var(--serif); font-size: 1.4rem; color: var(--azul-tinta); font-style: italic; margin-bottom: 24px; line-height: 1.4; }
-  .reflexion-card .pensamiento { color: var(--gris-texto); font-size: 1rem; max-width: none; }
+  .equipo-card h3 { font-size: 1.05rem; margin-bottom: 4px; }
+  .equipo-card .cargo { color: var(--verde); font-weight: 600; font-size: 0.85rem; margin-bottom: 12px; }
+  .equipo-card .dato { font-size: 0.88rem; color: var(--gris-texto); margin-bottom: 4px; }
+  .equipo-vacio { text-align:center; color: var(--gris-texto); padding: 30px 0 48px; }
 </style>
 </head>
 <body>
@@ -42,14 +45,14 @@
   </div>
 </header>
 
-<div class="pagina-cabeza wrap" style="text-align:center;">
-  <h1>Una palabra para hoy</h1>
+<div class="pagina-cabeza wrap">
+  <h1>Equipo de Apoyo</h1>
+  <p>Sacerdotes, psicólogos, trabajadores sociales y agentes de pastoral que acompañan el Centro de Escucha.</p>
 </div>
 
-<div class="reflexion-card" id="reflexion">Cargando…</div>
-
-<div class="wrap" style="text-align:center; padding-bottom:40px;">
-  <a href="agendar-cita.html" class="btn btn-secundario">¿Necesitas hablar con alguien? Agenda una cita</a>
+<div class="wrap">
+  <div class="equipo-grid" id="equipo-grid"></div>
+  <p class="equipo-vacio" id="equipo-vacio" style="display:none;">Estamos conformando el equipo — muy pronto verás aquí a quienes te acompañarán.</p>
 </div>
 
 <footer class="site-footer">
@@ -76,13 +79,18 @@
 </footer>
 
 <script type="module">
-  import { obtenerReflexionDelDia } from './js/firebase-init.js';
-  obtenerReflexionDelDia().then(r => {
-    document.getElementById('reflexion').innerHTML = `
-      <div class="cita">${r.cita}</div>
-      <div class="texto">"${r.texto}"</div>
-      <div class="pensamiento">${r.pensamiento}</div>
-    `;
+  import { obtenerEquipoApoyo } from './js/firebase-init.js';
+  obtenerEquipoApoyo().then(lista => {
+    const grid = document.getElementById('equipo-grid');
+    const vacio = document.getElementById('equipo-vacio');
+    if (!lista.length) { vacio.style.display = 'block'; return; }
+    grid.innerHTML = lista.map(m => `
+      <div class="equipo-card">
+        <h3>${m.nombre}</h3>
+        <div class="cargo">${m.cargo}</div>
+        ${m.telefono ? `<div class="dato">📞 ${m.telefono}</div>` : ''}
+        ${m.correo ? `<div class="dato">✉️ ${m.correo}</div>` : ''}
+      </div>`).join('');
   });
 </script>
 </body>

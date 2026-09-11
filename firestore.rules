@@ -30,6 +30,13 @@ service cloud.firestore {
       allow write: if esAdmin();
     }
 
+    // Equipo de apoyo (sacerdotes, psicólogos, trabajadores sociales, etc.):
+    // lectura pública (página "Equipo de Apoyo"), escritura solo admin.
+    match /equipo_apoyo/{miembroId} {
+      allow read: if true;
+      allow write: if esAdmin();
+    }
+
     // Reflexiones de la sección "Motivación": lectura pública, escritura solo admin.
     match /reflexiones/{reflexionId} {
       allow read: if true;

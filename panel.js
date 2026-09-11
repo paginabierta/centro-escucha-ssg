@@ -32,6 +32,7 @@ onAuthStateChanged(auth, async (user) => {
   if (rolActual === 'admin') {
     document.getElementById('tab-rutas').style.display = 'block';
     document.getElementById('tab-agentes').style.display = 'block';
+    document.getElementById('tab-equipoapoyo').style.display = 'block';
     document.getElementById('tab-motivacion').style.display = 'block';
     document.getElementById('tab-accesos').style.display = 'block';
   }
@@ -50,6 +51,7 @@ document.querySelectorAll('.tab').forEach(tab => {
     document.getElementById('sec-' + tab.dataset.tab).classList.add('activo');
     if (tab.dataset.tab === 'rutas') cargarTablaRutas();
     if (tab.dataset.tab === 'agentes') cargarListaAgentes();
+    if (tab.dataset.tab === 'equipoapoyo') cargarListaEquipoApoyo();
     if (tab.dataset.tab === 'motivacion') cargarListaReflexiones();
   });
 });
@@ -166,7 +168,7 @@ async function cargarCitas() {
       const modalidadTexto = { 'presencial-sangil': 'Presencial en San Gil', 'presencial-parroquia': 'Presencial en su parroquia', 'virtual': 'Virtual' }[c.modalidad] || c.modalidad;
       return `<div class="caso">
         <strong>${c.nombre}</strong> — ${modalidadTexto} con ${c.agente || 'quien esté disponible'}
-        <div class="meta">${c.municipio} · Prefiere: ${c.fechaPreferida} · Contacto: ${c.contacto} · Solicitado ${fecha} · Estado: ${c.estado}</div>
+        <div class="meta">${c.municipio} · Prefiere: ${c.fechaPreferida} · Tel: ${c.telefono || '—'}${c.correo ? ' · Correo: ' + c.correo : ''} · Solicitado ${fecha} · Estado: ${c.estado}</div>
         ${c.motivo ? `<div class="meta">Motivo: ${c.motivo}</div>` : ''}
         ${c.estado === 'pendiente' ? `<button class="fila-guardar" data-id="${d.id}" style="margin-top:6px;">Marcar como confirmada</button>` : ''}
       </div>`;
@@ -212,6 +214,45 @@ document.getElementById('form-agente')?.addEventListener('submit', async (e) => 
     msg.className = 'form-msg ok';
     e.target.reset();
     cargarListaAgentes();
+  } catch (err) {
+    msg.textContent = 'Error: ' + err.message;
+    msg.className = 'form-msg error';
+  }
+});
+
+// ---------- Equipo de Apoyo (admin) ----------
+async function cargarListaEquipoApoyo() {
+  const cont = document.getElementById('lista-equipoapoyo');
+  try {
+    const snap = await getDocs(collection(db, 'equipo_apoyo'));
+    if (snap.empty) { cont.innerHTML = '<p style="font-size:0.85rem;">Aún no hay nadie registrado.</p>'; return; }
+    cont.innerHTML = snap.docs.map(d => {
+      const m = d.data();
+      return `<div class="caso">
+        <strong>${m.nombre}</strong> — ${m.cargo}
+        <div class="meta">${m.telefono || '—'} · ${m.correo || '—'}</div>
+      </div>`;
+    }).join('');
+  } catch (err) {
+    cont.innerHTML = `<p class="form-msg error">Error: ${err.message}</p>`;
+  }
+}
+
+document.getElementById('form-equipoapoyo')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('msg-equipoapoyo');
+  try {
+    await addDoc(collection(db, 'equipo_apoyo'), {
+      nombre: document.getElementById('ea-nombre').value,
+      cargo: document.getElementById('ea-cargo').value,
+      telefono: document.getElementById('ea-telefono').value,
+      correo: document.getElementById('ea-correo').value,
+      activo: true,
+    });
+    msg.textContent = 'Agregado al equipo de apoyo.';
+    msg.className = 'form-msg ok';
+    e.target.reset();
+    cargarListaEquipoApoyo();
   } catch (err) {
     msg.textContent = 'Error: ' + err.message;
     msg.className = 'form-msg error';

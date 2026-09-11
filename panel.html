@@ -47,6 +47,7 @@
     <div class="tab" data-tab="citas">Solicitudes de cita</div>
     <div class="tab" data-tab="rutas" id="tab-rutas" style="display:none;">Rutas por municipio</div>
     <div class="tab" data-tab="agentes" id="tab-agentes" style="display:none;">Agentes del equipo</div>
+    <div class="tab" data-tab="equipoapoyo" id="tab-equipoapoyo" style="display:none;">Equipo de Apoyo</div>
     <div class="tab" data-tab="motivacion" id="tab-motivacion" style="display:none;">Motivación</div>
     <div class="tab" data-tab="accesos" id="tab-accesos" style="display:none;">Accesos</div>
   </div>
@@ -116,6 +117,20 @@
       <div class="form-msg" id="msg-agente"></div>
     </form>
     <div id="lista-agentes">Cargando…</div>
+  </section>
+
+  <!-- EQUIPO DE APOYO (solo admin) -->
+  <section class="panel-seccion" id="sec-equipoapoyo">
+    <p style="font-size:0.85rem;">Sacerdotes, psicólogos, trabajadores sociales y demás personas que apoyan el Centro de Escucha. Esta información se muestra públicamente en la página "Equipo de Apoyo".</p>
+    <form id="form-equipoapoyo" style="background:white; border:1px solid var(--borde); border-radius:10px; padding:18px; margin-bottom:20px;">
+      <div class="campo"><label>Nombres y apellidos</label><input type="text" id="ea-nombre" required></div>
+      <div class="campo"><label>Cargo y rol</label><input type="text" id="ea-cargo" required placeholder="Ej. Sacerdote acompañante, Psicóloga, Trabajador social"></div>
+      <div class="campo"><label>Teléfono</label><input type="text" id="ea-telefono"></div>
+      <div class="campo"><label>Correo electrónico</label><input type="email" id="ea-correo"></div>
+      <button type="submit" class="btn btn-primario">Agregar al equipo de apoyo</button>
+      <div class="form-msg" id="msg-equipoapoyo"></div>
+    </form>
+    <div id="lista-equipoapoyo">Cargando…</div>
   </section>
 
   <!-- MOTIVACIÓN (solo admin) -->
