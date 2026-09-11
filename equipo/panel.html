@@ -55,6 +55,7 @@
     <div class="tab" data-tab="agentes" id="tab-agentes" style="display:none;">Agentes del equipo</div>
     <div class="tab" data-tab="equipoapoyo" id="tab-equipoapoyo" style="display:none;">Equipo de Apoyo</div>
     <div class="tab" data-tab="tema" id="tab-tema" style="display:none;">Configuración</div>
+    <div class="tab" data-tab="textos" id="tab-textos" style="display:none;">Textos de páginas</div>
     <div class="tab" data-tab="motivacion" id="tab-motivacion" style="display:none;">Motivación</div>
     <div class="tab" data-tab="accesos" id="tab-accesos" style="display:none;">Accesos</div>
   </div>
@@ -154,6 +155,26 @@
       </div>
       <button type="submit" class="btn btn-primario">Guardar configuración</button>
       <div class="form-msg" id="msg-tema"></div>
+    </form>
+  </section>
+
+  <!-- TEXTOS DE PÁGINAS (solo admin) -->
+  <section class="panel-seccion" id="sec-textos">
+    <p style="font-size:0.85rem;">Edita los párrafos de cada página pública. Los títulos, listas y botones no se editan aquí — solo los textos de párrafo.</p>
+    <div class="campo" style="max-width:360px;">
+      <label>Página</label>
+      <select id="textos-pagina">
+        <option value="inicio">Inicio</option>
+        <option value="que_es">Qué es el Centro</option>
+        <option value="como_acompanamos">Cómo acompañamos</option>
+        <option value="contacto">Contacto</option>
+        <option value="equipo_apoyo">Equipo de Apoyo</option>
+      </select>
+    </div>
+    <form id="form-textos" style="background:white; border:1px solid var(--borde); border-radius:10px; padding:20px; max-width:640px;">
+      <div id="campos-textos"></div>
+      <button type="submit" class="btn btn-primario">Guardar textos de esta página</button>
+      <div class="form-msg" id="msg-textos"></div>
     </form>
   </section>
 
