@@ -44,7 +44,11 @@
 
   <div class="tabs">
     <div class="tab activo" data-tab="bitacora">Bitácora de casos</div>
+    <div class="tab" data-tab="citas">Solicitudes de cita</div>
     <div class="tab" data-tab="rutas" id="tab-rutas" style="display:none;">Rutas por municipio</div>
+    <div class="tab" data-tab="agentes" id="tab-agentes" style="display:none;">Agentes del equipo</div>
+    <div class="tab" data-tab="equipoapoyo" id="tab-equipoapoyo" style="display:none;">Equipo de Apoyo</div>
+    <div class="tab" data-tab="motivacion" id="tab-motivacion" style="display:none;">Motivación</div>
     <div class="tab" data-tab="accesos" id="tab-accesos" style="display:none;">Accesos</div>
   </div>
 
@@ -89,6 +93,58 @@
         <tbody id="tabla-rutas-body"><tr><td colspan="6">Cargando…</td></tr></tbody>
       </table>
     </div>
+  </section>
+
+  <!-- CITAS (todo el equipo) -->
+  <section class="panel-seccion" id="sec-citas">
+    <p style="font-size:0.85rem;">Solicitudes enviadas desde el formulario público. Al confirmar una cita, agrégala tú mismo a tu Google Calendar.</p>
+    <div id="lista-citas">Cargando…</div>
+  </section>
+
+  <!-- AGENTES (solo admin) -->
+  <section class="panel-seccion" id="sec-agentes">
+    <p style="font-size:0.85rem;">Quiénes aparecen como opción en el formulario público de "Agendar cita".</p>
+    <form id="form-agente" style="background:white; border:1px solid var(--borde); border-radius:10px; padding:18px; margin-bottom:20px;">
+      <div class="campo"><label>Nombre</label><input type="text" id="ag-nombre" required placeholder="Ej. Pbro. Nombre Apellido"></div>
+      <div class="campo"><label>Sede / parroquia</label><input type="text" id="ag-sede" required placeholder="Ej. Parroquia San Pedro Apóstol, Vado Real"></div>
+      <div class="campo">
+        <label>Modalidades que ofrece</label>
+        <label style="font-weight:400; display:inline-block; margin-right:14px;"><input type="checkbox" id="ag-mod-virtual" style="width:auto;"> Virtual</label>
+        <label style="font-weight:400; display:inline-block; margin-right:14px;"><input type="checkbox" id="ag-mod-sangil" style="width:auto;"> Presencial en San Gil</label>
+        <label style="font-weight:400; display:inline-block;"><input type="checkbox" id="ag-mod-parroquia" style="width:auto;"> Presencial en su parroquia</label>
+      </div>
+      <button type="submit" class="btn btn-primario">Agregar al equipo</button>
+      <div class="form-msg" id="msg-agente"></div>
+    </form>
+    <div id="lista-agentes">Cargando…</div>
+  </section>
+
+  <!-- EQUIPO DE APOYO (solo admin) -->
+  <section class="panel-seccion" id="sec-equipoapoyo">
+    <p style="font-size:0.85rem;">Sacerdotes, psicólogos, trabajadores sociales y demás personas que apoyan el Centro de Escucha. Esta información se muestra públicamente en la página "Equipo de Apoyo".</p>
+    <form id="form-equipoapoyo" style="background:white; border:1px solid var(--borde); border-radius:10px; padding:18px; margin-bottom:20px;">
+      <div class="campo"><label>Nombres y apellidos</label><input type="text" id="ea-nombre" required></div>
+      <div class="campo"><label>Cargo y rol</label><input type="text" id="ea-cargo" required placeholder="Ej. Sacerdote acompañante, Psicóloga, Trabajador social"></div>
+      <div class="campo"><label>Teléfono</label><input type="text" id="ea-telefono"></div>
+      <div class="campo"><label>Correo electrónico</label><input type="email" id="ea-correo"></div>
+      <button type="submit" class="btn btn-primario">Agregar al equipo de apoyo</button>
+      <div class="form-msg" id="msg-equipoapoyo"></div>
+    </form>
+    <div id="lista-equipoapoyo">Cargando…</div>
+  </section>
+
+  <!-- MOTIVACIÓN (solo admin) -->
+  <section class="panel-seccion" id="sec-motivacion">
+    <p style="font-size:0.85rem;">Frases/reflexiones que rotan en la página pública "Motivación", una por día.</p>
+    <button class="btn btn-secundario" id="btn-cargar-reflexiones" style="margin-bottom:16px;">Cargar reflexiones de ejemplo a Firestore (una sola vez)</button>
+    <form id="form-reflexion" style="background:white; border:1px solid var(--borde); border-radius:10px; padding:18px; margin-bottom:20px;">
+      <div class="campo"><label>Cita bíblica</label><input type="text" id="rf-cita" required placeholder="Ej. Salmo 23, 4"></div>
+      <div class="campo"><label>Texto</label><input type="text" id="rf-texto" required></div>
+      <div class="campo"><label>Pensamiento breve</label><textarea id="rf-pensamiento" required></textarea></div>
+      <button type="submit" class="btn btn-primario">Agregar reflexión</button>
+      <div class="form-msg" id="msg-reflexion"></div>
+    </form>
+    <div id="lista-reflexiones">Cargando…</div>
   </section>
 
   <!-- ACCESOS (solo admin) -->
