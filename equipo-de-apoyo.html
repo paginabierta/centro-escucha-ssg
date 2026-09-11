@@ -21,7 +21,18 @@
   }
   .equipo-card h3 { font-size: 1.05rem; margin-bottom: 4px; }
   .equipo-card .cargo { color: var(--verde); font-weight: 600; font-size: 0.85rem; margin-bottom: 12px; }
-  .equipo-card .dato { font-size: 0.88rem; color: var(--gris-texto); margin-bottom: 4px; }
+  .equipo-card .dato { font-size: 0.88rem; margin-bottom: 6px; }
+  .equipo-card .dato a { color: var(--gris-texto); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+  .equipo-card .dato a:hover { color: var(--verde); text-decoration: underline; }
+  .equipo-card .acciones { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+  .equipo-card .acciones a {
+    font-size: 0.8rem; font-weight: 600; text-decoration: none;
+    padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--borde); color: var(--azul-tinta);
+  }
+  .equipo-card .acciones a.whatsapp { border-color: #25D36655; color: #1DA851; }
+  .equipo-card .acciones a.whatsapp:hover { background: #25D36618; }
+  .equipo-card .acciones a.llamar:hover { background: var(--verde-claro); }
+  .equipo-card .acciones a.correo:hover { background: var(--verde-claro); }
   .equipo-vacio { text-align:center; color: var(--gris-texto); padding: 30px 0 48px; }
 </style>
 </head>
@@ -80,17 +91,34 @@
 
 <script type="module">
   import { obtenerEquipoApoyo } from './js/firebase-init.js';
+
+  function soloDigitos(t) { return (t || '').replace(/\D/g, ''); }
+  function numeroWhatsapp(tel) {
+    let d = soloDigitos(tel);
+    if (!d) return null;
+    if (d.length === 10) d = '57' + d; // celular colombiano sin indicativo
+    return d;
+  }
+
   obtenerEquipoApoyo().then(lista => {
     const grid = document.getElementById('equipo-grid');
     const vacio = document.getElementById('equipo-vacio');
     if (!lista.length) { vacio.style.display = 'block'; return; }
-    grid.innerHTML = lista.map(m => `
+    grid.innerHTML = lista.map(m => {
+      const wa = numeroWhatsapp(m.telefono);
+      return `
       <div class="equipo-card">
         <h3>${m.nombre}</h3>
         <div class="cargo">${m.cargo}</div>
-        ${m.telefono ? `<div class="dato">📞 ${m.telefono}</div>` : ''}
-        ${m.correo ? `<div class="dato">✉️ ${m.correo}</div>` : ''}
-      </div>`).join('');
+        ${m.telefono ? `<div class="dato"><a href="tel:+${soloDigitos(m.telefono) || m.telefono}">📞 ${m.telefono}</a></div>` : ''}
+        ${m.correo ? `<div class="dato"><a href="mailto:${m.correo}">✉️ ${m.correo}</a></div>` : ''}
+        <div class="acciones">
+          ${m.telefono ? `<a class="llamar" href="tel:+${soloDigitos(m.telefono) || m.telefono}">Llamar</a>` : ''}
+          ${wa ? `<a class="whatsapp" href="https://wa.me/${wa}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+          ${m.correo ? `<a class="correo" href="mailto:${m.correo}">Enviar correo</a>` : ''}
+        </div>
+      </div>`;
+    }).join('');
   });
 </script>
 </body>
