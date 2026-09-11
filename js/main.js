@@ -4,7 +4,8 @@ const selector = document.getElementById('selector-municipio');
 const resultado = document.getElementById('resultado-ruta');
 
 function campo(icono, rotulo, valor) {
-  const val = valor && valor.trim() && valor !== 'Pendiente'
+  const pendientes = ['Pendiente', 'Por definir', ''];
+  const val = valor && !pendientes.includes(valor.trim())
     ? valor
     : '<span class="vacio">Aún no confirmado — contacta a SEPAS</span>';
   return `

@@ -6,6 +6,7 @@
 <title>Panel del equipo — Centro de Escucha Psicoespiritual</title>
 <link rel="icon" href="../img/logo.png">
 <link rel="stylesheet" href="../css/style.css">
+<script type="module" src="../js/tema.js"></script>
 <style>
   .panel-wrap { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
   .panel-top { display:flex; justify-content:space-between; align-items:center; margin-bottom: 24px; flex-wrap: wrap; gap: 10px; }
@@ -22,6 +23,11 @@
   .fila-guardar { background: var(--dorado); border:none; border-radius:4px; padding:5px 10px; font-weight:600; cursor:pointer; font-size:0.8rem; }
   .lista-casos .caso { border-bottom:1px solid var(--borde); padding: 12px 0; }
   .lista-casos .caso .meta { font-size:0.78rem; color: var(--gris-texto); }
+  .opcion-tema { display:flex; align-items:center; gap:10px; padding:10px; border:1.5px solid var(--borde); border-radius:8px; margin-bottom:8px; cursor:pointer; }
+  .opcion-tema.activa { border-color: var(--dorado); background: var(--verde-claro); }
+  .opcion-tema input { width:auto; margin:0; }
+  .swatches { display:flex; gap:4px; }
+  .swatch { width:16px; height:16px; border-radius:50%; border:1px solid rgba(0,0,0,0.15); }
 </style>
 </head>
 <body>
@@ -48,6 +54,7 @@
     <div class="tab" data-tab="rutas" id="tab-rutas" style="display:none;">Rutas por municipio</div>
     <div class="tab" data-tab="agentes" id="tab-agentes" style="display:none;">Agentes del equipo</div>
     <div class="tab" data-tab="equipoapoyo" id="tab-equipoapoyo" style="display:none;">Equipo de Apoyo</div>
+    <div class="tab" data-tab="tema" id="tab-tema" style="display:none;">Configuración</div>
     <div class="tab" data-tab="motivacion" id="tab-motivacion" style="display:none;">Motivación</div>
     <div class="tab" data-tab="accesos" id="tab-accesos" style="display:none;">Accesos</div>
   </div>
@@ -131,6 +138,23 @@
       <div class="form-msg" id="msg-equipoapoyo"></div>
     </form>
     <div id="lista-equipoapoyo">Cargando…</div>
+  </section>
+
+  <!-- TEMA / CONFIGURACIÓN (solo admin) -->
+  <section class="panel-seccion" id="sec-tema">
+    <p style="font-size:0.85rem;">Elige la paleta de colores y la tipografía de todo el sitio público. Se aplica al instante, sin tocar ningún archivo.</p>
+    <form id="form-tema" style="background:white; border:1px solid var(--borde); border-radius:10px; padding:20px; max-width:520px;">
+      <div class="campo">
+        <label>Paleta de colores</label>
+        <div id="opciones-paleta"></div>
+      </div>
+      <div class="campo">
+        <label>Tipografía</label>
+        <div id="opciones-fuente"></div>
+      </div>
+      <button type="submit" class="btn btn-primario">Guardar configuración</button>
+      <div class="form-msg" id="msg-tema"></div>
+    </form>
   </section>
 
   <!-- MOTIVACIÓN (solo admin) -->

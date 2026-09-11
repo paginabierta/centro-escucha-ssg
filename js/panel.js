@@ -1,6 +1,7 @@
 import { FIREBASE_LISTO, auth, db, obtenerRutas, obtenerAgentes } from './firebase-init.js';
 import RUTAS_SEED from './rutas-data.js';
 import REFLEXIONES_SEED from './reflexiones-data.js';
+import { PALETAS, FUENTES, obtenerTema, aplicarTema } from './tema.js';
 
 if (!FIREBASE_LISTO) {
   document.querySelector('.panel-wrap').innerHTML =
@@ -33,6 +34,7 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('tab-rutas').style.display = 'block';
     document.getElementById('tab-agentes').style.display = 'block';
     document.getElementById('tab-equipoapoyo').style.display = 'block';
+    document.getElementById('tab-tema').style.display = 'block';
     document.getElementById('tab-motivacion').style.display = 'block';
     document.getElementById('tab-accesos').style.display = 'block';
   }
@@ -52,6 +54,7 @@ document.querySelectorAll('.tab').forEach(tab => {
     if (tab.dataset.tab === 'rutas') cargarTablaRutas();
     if (tab.dataset.tab === 'agentes') cargarListaAgentes();
     if (tab.dataset.tab === 'equipoapoyo') cargarListaEquipoApoyo();
+    if (tab.dataset.tab === 'tema') cargarOpcionesTema();
     if (tab.dataset.tab === 'motivacion') cargarListaReflexiones();
   });
 });
@@ -295,6 +298,59 @@ document.getElementById('form-reflexion')?.addEventListener('submit', async (e) 
     msg.className = 'form-msg ok';
     e.target.reset();
     cargarListaReflexiones();
+  } catch (err) {
+    msg.textContent = 'Error: ' + err.message;
+    msg.className = 'form-msg error';
+  }
+});
+
+// ---------- Tema / configuración (admin) ----------
+let temaSeleccionado = { paleta: 'diocesis', fuente: 'clasica' };
+
+async function cargarOpcionesTema() {
+  temaSeleccionado = await obtenerTema();
+  pintarOpcionesTema();
+}
+
+function pintarOpcionesTema() {
+  const contPaleta = document.getElementById('opciones-paleta');
+  contPaleta.innerHTML = Object.entries(PALETAS).map(([id, p]) => `
+    <label class="opcion-tema ${temaSeleccionado.paleta === id ? 'activa' : ''}">
+      <input type="radio" name="paleta" value="${id}" ${temaSeleccionado.paleta === id ? 'checked' : ''}>
+      <span class="swatches">
+        <span class="swatch" style="background:${p.verde}"></span>
+        <span class="swatch" style="background:${p.azul}"></span>
+        <span class="swatch" style="background:${p.dorado}"></span>
+      </span>
+      ${p.nombre}
+    </label>`).join('');
+
+  const contFuente = document.getElementById('opciones-fuente');
+  contFuente.innerHTML = Object.entries(FUENTES).map(([id, f]) => `
+    <label class="opcion-tema ${temaSeleccionado.fuente === id ? 'activa' : ''}">
+      <input type="radio" name="fuente" value="${id}" ${temaSeleccionado.fuente === id ? 'checked' : ''}>
+      <span style="font-family:${f.serif}; font-weight:600;">${f.nombre}</span>
+    </label>`).join('');
+
+  contPaleta.querySelectorAll('input').forEach(inp => inp.addEventListener('change', () => {
+    temaSeleccionado.paleta = inp.value;
+    aplicarTema(temaSeleccionado.paleta, temaSeleccionado.fuente); // vista previa en vivo
+    pintarOpcionesTema();
+  }));
+  contFuente.querySelectorAll('input').forEach(inp => inp.addEventListener('change', () => {
+    temaSeleccionado.fuente = inp.value;
+    aplicarTema(temaSeleccionado.paleta, temaSeleccionado.fuente);
+    pintarOpcionesTema();
+  }));
+}
+
+document.getElementById('form-tema')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('msg-tema');
+  try {
+    await setDoc(doc(db, 'configuracion', 'tema'), temaSeleccionado, { merge: true });
+    msg.textContent = 'Configuración guardada — el sitio público ya se actualizó.';
+    msg.className = 'form-msg ok';
   } catch (err) {
     msg.textContent = 'Error: ' + err.message;
     msg.className = 'form-msg error';
