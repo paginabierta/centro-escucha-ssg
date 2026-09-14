@@ -66,9 +66,16 @@
       <select id="c-agente"></select>
     </div>
     <div class="campo">
-      <label for="c-fecha">Fecha y horario que te funciona (aproximado)</label>
-      <input type="text" id="c-fecha" placeholder="Ej. Martes en la tarde, cualquier día de la próxima semana…" required>
+      <label for="c-fecha">Fecha que prefieres</label>
+      <input type="date" id="c-fecha" required>
     </div>
+    <div class="campo">
+      <label for="c-hora">Horario que prefieres</label>
+      <select id="c-hora" required></select>
+    </div>
+    <p style="background:var(--verde-claro); border:1px solid var(--borde); border-radius:8px; padding:10px 14px; font-size:0.82rem; color:var(--gris-texto); margin-top:-6px;">
+      Esta es la fecha y hora que a <strong>ti</strong> te vendría bien — no es una cita confirmada todavía. Nuestro equipo la revisa y te contacta por correo o teléfono para confirmarla o proponerte otra opción cercana.
+    </p>
     <div class="campo">
       <label for="c-motivo">¿Sobre qué te gustaría hablar? (opcional)</label>
       <textarea id="c-motivo" placeholder="Solo si quieres contarnos algo antes de la cita."></textarea>
